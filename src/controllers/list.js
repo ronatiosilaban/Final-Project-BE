@@ -10,7 +10,7 @@ exports.addLists = async (req, res) => {
             name: req.body.name,
             desc: req.body.desc,
             image: req.file.filename,
-            idUser: req.body.idUser,
+            idUser: req.user.id,
             idCategory: req.body.idCategory,
             idSuplier: req.body.idSuplier,
         };

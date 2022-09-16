@@ -67,10 +67,6 @@ exports.Login = async(req,res)=>{
             },
         });
     try {
-
-
-        
-
         // console.log(data);
         const userExist = await users.findOne({
             where: {

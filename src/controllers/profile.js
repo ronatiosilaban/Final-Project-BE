@@ -8,7 +8,7 @@ exports.addProfile = async (req, res) => {
             possition: req.body.possition,
             desc: req.body.desc,
             image: req.file.filename,
-            idProfile: req.body.idProfile,
+            idProfile: req.user.id,
         };
 
         // console.log(data);
@@ -124,8 +124,7 @@ exports.updateProfile = async (req, res) => {
                 data: {
                     newdata,
                     image: "http://localhost:5000/uploads/" + newdata.image
-                }
-                 
+                } 
             })
     } catch (error) {
         console.log(error)
