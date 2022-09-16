@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Flow.belongsTo(models.listBarang, {
         as: "listBarang",
         foreignKey: {
-          name: "ididList",
+          name: "idList",
         },
       });
     }

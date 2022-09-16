@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
           name: "idUser",
         },
       });
+      users.hasMany(models.profile, {
+        as: "profile",
+        foreignKey: {
+          name: "idProfile",
+        },
+      });
     }
   }
   users.init({

@@ -1,14 +1,23 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('itemSupliers', {
+    await queryInterface.createTable('profiles', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      listBarang: {
+      possition: {
+        type: Sequelize.STRING
+      },
+      image: {
+        type: Sequelize.STRING
+      },
+      desc: {
+        type: Sequelize.STRING
+      },
+      idProfile: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -22,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('itemSupliers');
+    await queryInterface.dropTable('profiles');
   }
 };

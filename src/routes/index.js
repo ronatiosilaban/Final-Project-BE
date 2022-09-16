@@ -11,10 +11,10 @@ const { addLists, getLists,updateLists,deleteLists,getlistsOne  } = require('../
 const { addFlow, getFlows,updateFlow,deleteFlow,getFlow  } = require('../controllers/flow')
 const { addSuplier, getSupliers,updateSuplier,deleteSuplier,getSuplier  } = require('../controllers/suplier')
 const { addCategory, getCategorys,updateCategory,deleteCategory,getCategory  } = require('../controllers/category')
-
+const { addProfile, getProfiles,updateProfile,deleteProfile,getProfile  } = require('../controllers/profile')
 // Route
 // add route here
-router.post('/add', auth,addUsers)
+router.post('/addUser', auth,addUsers)
 router.post('/Login', Login)
 router.get('/get', getUsers)
 router.patch('/update/:id', updateUser)
@@ -44,6 +44,12 @@ router.get('/getCategorys', auth, getCategorys)
 router.get('/getCategory/:id', auth, getCategory )
 router.patch('/updateCategory/:id', auth, updateCategory)
 router.delete('/deleteCategory/:id', auth, deleteCategory)
+
+router.post('/addProfile', auth, uploadFile("image"),addProfile)
+router.get('/getProfiles', auth, getProfiles)
+router.get('/getProfile/:id', auth, getProfile )
+router.patch('/updateProfile/:id', auth, updateProfile)
+router.delete('/deleteProfile/:id', auth, deleteProfile)
 
 
 module.exports = router

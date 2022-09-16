@@ -16,27 +16,27 @@ module.exports = (sequelize, DataTypes) => {
           name: "idUser",
         },
       });
+
+      listBarang.hasMany(models.Flow, {
+        as: "flow",
+        foreignKey: {
+          name: "idList",
+        },
+      });
+      
       listBarang.belongsTo(models.Category, {
         as: "category",
         foreignKey: {
           name: "idCategory",
         },
       });
+
       listBarang.belongsTo(models.suplier, {
         as: "suplier",
         foreignKey: {
           name: "idSuplier",
         },
       });
-      
-      listBarang.hasMany(models.Flow, {
-        as: "Flow",
-        foreignKey: {
-          name: "idList",
-        },
-      });
-
-    
     }
   }
   listBarang.init({

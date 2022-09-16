@@ -6,9 +6,8 @@ exports.addFlow = async (req, res) => {
     // code here
     try {
         const data = req.body
-
-        // console.log(data);
         const createdData = await Flow.create(data)
+
         let productData = await Flow.findOne({
             where: {
                 id: createdData.id,
@@ -20,17 +19,19 @@ exports.addFlow = async (req, res) => {
                     attributes: {
                         exclude: ['createdAt', 'updatedAt'],
                     },
-                },
+                }
             ],
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'idList'],
+                exclude: ['createdAt', 'updatedAt'],
             },
         });
-
-       NewData = JSON.parse(JSON.stringify(productData));
+        productData = JSON.parse(JSON.stringify(productData));
         res.send({
             status: "success",
-            data: NewData
+            data: {
+                productData,
+               image: "http://localhost:5000/uploads/" + productData.listBarang.image
+            }
         })
 
     } catch (error) {

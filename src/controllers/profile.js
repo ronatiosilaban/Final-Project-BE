@@ -1,24 +1,20 @@
-const { listBarang, users,Category,suplier } = require('../../models');
+const {profile, users} = require("../../models")
 
 
-
-
-exports.addLists = async (req, res) => {
+exports.addProfile = async (req, res) => {
     // code here
     try {
         const data = {
-            name: req.body.name,
+            possition: req.body.possition,
             desc: req.body.desc,
             image: req.file.filename,
-            idUser: req.body.idUser,
-            idCategory: req.body.idCategory,
-            idSuplier: req.body.idSuplier,
+            idProfile: req.body.idProfile,
         };
 
         // console.log(data);
-        const createdData = await listBarang.create(data)
+        const createdData = await profile.create(data)
 
-        let productData = await listBarang.findOne({
+        let productData = await profile.findOne({
             where: {
                 id: createdData.id,
             },
@@ -29,32 +25,18 @@ exports.addLists = async (req, res) => {
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'password'],
                     },
-                },
-                {
-                    model: Category,
-                    as: 'category',
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt'],
-                    },
-                },
-                {
-                    model: suplier,
-                    as: 'suplier',
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt'],
-                    },
-                },
+                }
             ],
             attributes: {
-                exclude: ['createdAt', 'updatedAt', 'idUser'],
+                exclude: ['createdAt', 'updatedAt', 'idProfile'],
             },
         });
-        productData = JSON.parse(JSON.stringify(productData));
+        productDatas = JSON.parse(JSON.stringify(productData));
         res.send({
             status: "success",
             data: {
-                productData,
-               image: "http://localhost:5000/uploads/" + productData.image
+                productDatas,
+               image: "http://localhost:5000/uploads/" + productDatas.image
             }
         })
 
@@ -67,22 +49,22 @@ exports.addLists = async (req, res) => {
     }
 }
 
-exports.getLists = async (req, res) => {
+exports.getProfiles = async (req, res) => {
     // code here
     try {
-        const user = await listBarang.findAll()
+        const user = await profile.findAll()
 
         // `SELECT name,email, status, id FROM`
         productData = JSON.parse(JSON.stringify(user));
         newdata = productData[0]
-        res.send({
-            status: "success",
-            data: {
-                newdata,
-                image: "http://localhost:5000/uploads/" + newdata.image
-            }
-             
-        })
+            res.send({
+                status: "success",
+                data: {
+                    newdata,
+                    image: "http://localhost:5000/uploads/" + newdata.image
+                }
+                 
+            })
         
     } catch (error) {
         console.log(error)
@@ -94,17 +76,17 @@ exports.getLists = async (req, res) => {
 
 }
 
-exports.getlistsOne = async (req, res) => {
+exports.getProfile = async (req, res) => {
     try {
         const { id } = req.params
 
-        const data = await listBarang.findAll({
+        const data = await profile.findAll({
             where: {
                 id
             }})
 
             productData = JSON.parse(JSON.stringify(data));
-            newdata = productData[0]
+       newdata = productData[0]
             res.send({
                 status: "success",
                 data: {
@@ -123,13 +105,13 @@ exports.getlistsOne = async (req, res) => {
 }
 
 
-exports.updateLists = async (req, res) => {
+exports.updateProfile = async (req, res) => {
     // code here
     try {
         const id = req.params.id
         const newData = req.body
 
-        await listBarang.update(newData, {
+        await profile.update(newData, {
             where: {
                 id
             }
@@ -154,12 +136,12 @@ exports.updateLists = async (req, res) => {
     }
 }
 
-exports.deleteLists = async (req, res) => {
+exports.deleteProfile = async (req, res) => {
     // code here
     try {
         const { id } = req.params
 
-        await listBarang.destroy({
+        await profile.destroy({
             where: {
                 id
             }
