@@ -1,6 +1,5 @@
 const morgan = require("morgan");
-// import jwt from "jsonwebtoken";
-// import Log from "../models/LogModel.js";
+
 const { logging, users } = require("../../models");
 
 const stream = {
@@ -39,11 +38,8 @@ const skip = () => {
 };
 
 morgan.token("user", (req) => {
-  //   try {
-  //   } catch (error) {}
   const idUser = req.user?.id;
 
-  console.log("aaaaa", idUser);
   return idUser;
 });
 
@@ -51,5 +47,3 @@ exports.morganMiddleware = morgan(
   ":remote-addr :method :url :status :res[content-length] :response-time :user ",
   { stream, skip }
 );
-
-// module.exports = { morganMiddleware };

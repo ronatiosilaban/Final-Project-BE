@@ -4,24 +4,6 @@ const { Op } = require("sequelize");
 //router to create, findAll data
 exports.getLog = async (req, res) => {
   const search = req.query.search_query || "";
-
-  const totalRows = await logging.count({
-    where: {
-      [Op.or]: [
-        {
-          username: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-        {
-          email: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-      ],
-    },
-  });
-  // const totalPage = Math.ceil(totalRows / limit);
   const result = await logging.findAll({
     where: {
       [Op.or]: [
