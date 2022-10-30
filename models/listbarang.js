@@ -1,54 +1,62 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class listBarang extends Model {
+  class listbarang extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      listBarang.belongsTo(models.users, {
+      // define association here
+      listbarang.belongsTo(models.users, {
         as: "users",
         foreignKey: {
           name: "idUser",
         },
       });
 
-      listBarang.hasMany(models.Flow, {
+      listbarang.hasMany(models.flow, {
         as: "flow",
         foreignKey: {
           name: "idList",
         },
       });
-      
-      listBarang.belongsTo(models.Category, {
+
+      listbarang.belongsTo(models.category, {
         as: "category",
         foreignKey: {
           name: "idCategory",
         },
       });
 
-      listBarang.belongsTo(models.suplier, {
+      listbarang.belongsTo(models.suplier, {
         as: "suplier",
         foreignKey: {
           name: "idSuplier",
         },
       });
+      listbarang.hasMany(models.amount, {
+        as: "qty",
+        foreignKey: {
+          name: "idQty",
+        },
+      });
     }
   }
-  listBarang.init({
-    name: DataTypes.STRING,
-    desc: DataTypes.TEXT,
-    image: DataTypes.STRING,
-    idUser: DataTypes.INTEGER,
-    idCategory: DataTypes.INTEGER,
-    idSuplier: DataTypes.INTEGER 
-  }, {
-    sequelize,
-    modelName: 'listBarang',
-  });
-  return listBarang;
+  listbarang.init(
+    {
+      name: DataTypes.STRING,
+      desc: DataTypes.STRING,
+      image: DataTypes.STRING,
+      idUser: DataTypes.INTEGER,
+      idCategory: DataTypes.INTEGER,
+      idSuplier: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "listbarang",
+    }
+  );
+  return listbarang;
 };
