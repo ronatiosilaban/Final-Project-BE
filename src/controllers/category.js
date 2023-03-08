@@ -38,7 +38,23 @@ exports.addCategory = async (req, res) => {
 exports.getCategorys = async (req, res) => {
   // code here
   try {
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 20;
     const search = req.query.search_query || "";
+    const offset = limit * page;
+
+    const totalRows = await category.count({
+      where: {
+        [Op.or]: [
+          {
+            category: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      },
+    });
+    const totalPage = Math.ceil(totalRows / limit);
     const user = await category.findAll({
       where: {
         [Op.or]: [
@@ -49,6 +65,8 @@ exports.getCategorys = async (req, res) => {
           },
         ],
       },
+      offset: offset,
+      limit: limit,
       order: [["id", "DESC"]],
     });
 
@@ -56,9 +74,11 @@ exports.getCategorys = async (req, res) => {
 
     res.send({
       status: "success",
-      data: {
-        user,
-      },
+      data: user,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
     });
   } catch (error) {
     console.log(error);

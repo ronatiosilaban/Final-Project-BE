@@ -140,7 +140,24 @@ exports.Login = async (req, res) => {
 exports.getUsers = async (req, res) => {
   // code here
   try {
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 20;
     const search = req.query.search_query || "";
+    const offset = limit * page;
+
+    const totalRows = await users.count({
+      where: {
+        [Op.or]: [
+          {
+            username: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      },
+    });
+    const totalPage = Math.ceil(totalRows / limit);
+
     const user = await users.findAll({
       where: {
         [Op.or]: [
@@ -157,6 +174,8 @@ exports.getUsers = async (req, res) => {
         ],
       },
 
+      offset: offset,
+      limit: limit,
       order: [["id", "DESC"]],
       include: [
         {
@@ -176,6 +195,10 @@ exports.getUsers = async (req, res) => {
     res.send({
       status: "success",
       data: user,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
     });
   } catch (error) {
     console.log(error);

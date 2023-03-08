@@ -121,7 +121,23 @@ exports.addLists = async (req, res) => {
 exports.getLists = async (req, res) => {
   // code here
   try {
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 20;
     const search = req.query.search_query || "";
+    const offset = limit * page;
+
+    const totalRows = await listbarang.count({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      },
+    });
+    const totalPage = Math.ceil(totalRows / limit);
     const user = await listbarang.findAll({
       where: {
         [Op.or]: [
@@ -137,6 +153,8 @@ exports.getLists = async (req, res) => {
           },
         ],
       },
+      offset: offset,
+      limit: limit,
       order: [["id", "DESC"]],
       include: [
         {
@@ -178,6 +196,10 @@ exports.getLists = async (req, res) => {
         productData,
         QtyData,
       },
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
     });
   } catch (error) {
     console.log(error);

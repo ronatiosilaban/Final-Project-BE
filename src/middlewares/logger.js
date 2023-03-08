@@ -4,14 +4,16 @@ const { logging, users } = require("../../models");
 
 const stream = {
   write: async (message) => {
-    const data = message.split(" ", 6);
+    const data = message.split(" ");
 
     const UserId = data[0].split("::").join("");
 
     try {
+      const Id = data[6];
+      const User = Id.split(":");
       const username = await users.findOne({
         where: {
-          id: UserId,
+          id: User[1],
         },
       });
 
@@ -25,7 +27,6 @@ const stream = {
         error: data[5],
         date: date.toLocaleString(),
       });
-      console.log("res", response);
     } catch (error) {
       console.log(error.message);
     }
@@ -38,12 +39,10 @@ const skip = () => {
 };
 
 morgan.token("user", (req) => {
-  const idUser = req.user?.id;
-
-  return idUser;
+  return req.user.id;
 });
 
 exports.morganMiddleware = morgan(
-  ":remote-addr :method :url :status :res[content-length] :response-time :user ",
+  ":remote-addr :method :url :status :res[content-length] :response-time ::user ",
   { stream, skip }
 );

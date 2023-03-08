@@ -19,11 +19,6 @@ module.exports = {
       },
       idUser: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
       },
       idCategory: {
         type: Sequelize.INTEGER,

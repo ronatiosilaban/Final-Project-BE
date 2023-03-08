@@ -1,6 +1,7 @@
 const { suplier } = require("../../models");
 const { Op } = require("sequelize");
 
+//router to create, findAll, findOne,update,&delete data
 exports.addSuplier = async (req, res) => {
   // code here
   try {
@@ -40,7 +41,23 @@ exports.addSuplier = async (req, res) => {
 exports.getSupliers = async (req, res) => {
   // code here
   try {
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 20;
     const search = req.query.search_query || "";
+    const offset = limit * page;
+
+    const totalRows = await suplier.count({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      },
+    });
+    const totalPage = Math.ceil(totalRows / limit);
     const user = await suplier.findAll({
       where: {
         [Op.or]: [
@@ -61,15 +78,19 @@ exports.getSupliers = async (req, res) => {
           },
         ],
       },
+      offset: offset,
+      limit: limit,
       order: [["id", "DESC"]],
     });
 
     // `SELECT name,email, status, id FROM`
     res.send({
       status: "success",
-      data: {
-        user,
-      },
+      data: user,
+      page: page,
+      limit: limit,
+      totalRows: totalRows,
+      totalPage: totalPage,
     });
   } catch (error) {
     console.log(error);

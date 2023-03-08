@@ -31,12 +31,6 @@ module.exports = {
       },
       idProfile: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
